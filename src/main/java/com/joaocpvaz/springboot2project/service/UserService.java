@@ -1,51 +1,43 @@
 package com.joaocpvaz.springboot2project.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.joaocpvaz.springboot2project.domain.User;
+import com.joaocpvaz.springboot2project.repository.UserRepository;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
 	
-	private static List<User> users;
-	
-	static {
-		users = new ArrayList<>(List.of(new User(1L,"Joao", "Chagas", "joao@gmail.com")));
-	}
+	private final UserRepository userRepository;
 	
 	public List<User> listAll(){
-		return users;
+		return userRepository.findAll();
 	}
 	
 	public User findById(Long id){
-		return users.stream()
-				.filter(user -> user.getId().equals(id))
-				.findFirst()
+		return userRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not Found"));
 	}
 
 	public User save(User user) {
-		user.setId(ThreadLocalRandom.current().nextLong(2,10000));
-		users.add(user);
+		userRepository.save(user);
 		return user;
 	}
 
 	public void delete(long id) {
-		users.remove(findById(id));
+		userRepository.delete(findById(id));
 	}
 
 	public void replace(User user) {
 		delete(user.getId());
-		users.add(user);
+		userRepository.save(user);
 	}
 	
 	
