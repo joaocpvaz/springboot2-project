@@ -10,7 +10,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.joaocpvaz.springboot2project.domain.User;
 
+import lombok.NoArgsConstructor;
+
 @Service
+@NoArgsConstructor
 public class UserService {
 	
 	private static List<User> users;
