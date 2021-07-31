@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joaocpvaz.springboot2project.domain.User;
@@ -37,6 +38,11 @@ public class UserController {
 	@GetMapping (path = "/all")
 	public ResponseEntity<List<User>> listAll() {
 		return ResponseEntity.ok(userService.listAllNonPageable());
+	}
+	
+	@GetMapping (path = "/find")
+	public ResponseEntity<List<User>> findByFirstName(@RequestParam String name) {
+		return ResponseEntity.ok(userService.findByFirstName(name));
 	}
 	
 	@GetMapping(path = "/{id}")
